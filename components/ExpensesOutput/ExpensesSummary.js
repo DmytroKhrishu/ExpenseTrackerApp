@@ -27,10 +27,11 @@ const styles = StyleSheet.create({
   },
   periodText: {
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 14, 
   },
   sumText: {
     fontWeight: 'bold',
     fontSize: 16,
+    padding: 6,
   }
 });

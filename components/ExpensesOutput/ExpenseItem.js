@@ -3,31 +3,43 @@ import { GlobalStyles } from '../../constants/styles';
 import { useNavigation } from '@react-navigation/native';
 import { getFormattedDate } from '../../util/date';
 
-export default function ExpenseItem({ amount, date, description }) {
+export default function ExpenseItem({ id, amount, date, description }) {
   const navigation = useNavigation();
 
-  function manageExpense() {
-    navigation.navigate('ManageExpense');
+  function expensePressHandler() {
+    navigation.navigate('ManageExpense', {
+      expenseId: id,
+    });
   }
 
   return (
-    <Pressable style={styles.itemContainer} onPress={manageExpense}>
-      <View style={styles.infoContainer}>
-        <Text style={styles.descriptionText}>{description}</Text>
-        <Text style={styles.itemText}>{getFormattedDate(date)}</Text>
-      </View>
-      <Text style={styles.amountText}>${amount.toFixed(2)}</Text>
-    </Pressable>
+    <View style={styles.rootContainer}>
+      <Pressable
+        style={styles.itemContainer}
+        onPress={expensePressHandler}
+        android_ripple={{ color: GlobalStyles.colors.primary100 }}
+      >
+        <View style={styles.infoContainer}>
+          <Text style={styles.descriptionText}>{description}</Text>
+          <Text style={styles.itemText}>{getFormattedDate(date)}</Text>
+        </View>
+        <Text style={styles.amountText}>${amount.toFixed(2)}</Text>
+      </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    flex: 1,
+  rootContainer: {
+    borderRadius: 18,
+    overflow: 'hidden',
     marginVertical: 8,
     marginHorizontal: 16,
-    padding: 16,
+  },
+  itemContainer: {
+    flex: 1,
     borderRadius: 18,
+    padding: 16,
     backgroundColor: GlobalStyles.colors.primary400,
     elevation: 8,
     flexDirection: 'row',
