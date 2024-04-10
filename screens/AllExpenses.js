@@ -1,5 +1,5 @@
 import { Text } from "react-native";
 
 export default function AllExpenses() {
-  return <Text>To do</Text>
+  return <Text>AllExpenses</Text>
 }
