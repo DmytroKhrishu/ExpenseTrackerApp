@@ -26,6 +26,6 @@ export default function ExpensesList({ expenses }) {
 
 const styles = StyleSheet.create({
   listContainer: {
-   marginBottom: 120 
+   marginBottom: 150 
   }
 })
