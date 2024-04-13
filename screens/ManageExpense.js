@@ -2,7 +2,6 @@ import { useContext, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
-import Button from '../components/UI/Button';
 import { ExpensesContext } from '../store/expenses-context';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
 
@@ -22,35 +21,28 @@ export default function ManageExpense({ route, navigation }) {
     expenseCtx.deleteExpense(editedExpenseId);
     navigation.goBack();
   }
-
-  function confirmHandler() {
-    if (isEditing) {
-      expenseCtx.updateExpense(editedExpenseId, {
-        amount: 9.99,
-        date: new Date('2024-01-31'),
-        description: 'Dummy expense EDITED',
-      });
-    } else {
-      expenseCtx.addExpense({
-        amount: 9.99,
-        date: new Date('2024-01-31'),
-        description: 'Dummy expense',
-      });
-    }
-    navigation.goBack();
-  }
-
+  
   function cancelHandler() {
     navigation.goBack();
   }
 
+  function confirmHandler(expenseData) {
+    if (isEditing) {
+      expenseCtx.updateExpense(editedExpenseId, expenseData);
+    } else {
+      expenseCtx.addExpense(expenseData);
+    }
+    navigation.goBack();
+  }
+
+
   return (
     <View style={styles.container}>
-      <ExpenseForm />
-      <View style={styles.buttonContainer}>
-        <Button text={isEditing ? 'Update' : 'Add'} onPress={confirmHandler} />
-        <Button mode={'flat'} text={'Cancel'} onPress={cancelHandler} />
-      </View>
+      <ExpenseForm
+        submitButtonLabel={isEditing ? 'Update' : 'Add'}
+        onCancel={cancelHandler}
+        onSubmit={confirmHandler}
+      />
       {isEditing && (
         <View style={styles.deleteContainer}>
           <IconButton
@@ -76,11 +68,6 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     borderTopWidth: 2,
     borderTopColor: GlobalStyles.colors.primary200,
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
   },
 });
