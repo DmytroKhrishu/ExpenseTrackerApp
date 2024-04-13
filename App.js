@@ -49,7 +49,7 @@ function ExpensesOverview() {
           tabBarIcon: ({ size, color }) => (
             <Ionicons name="calendar" size={size} color={color} />
           ),
-          backgroundColor: 'black'
+        
         }}
       />
       <BottomTabs.Screen
