@@ -19,42 +19,7 @@ const DUMMY_EXPENSES = [
     amount: 999.99,
     date: new Date('2024-04-10'),
   },
-  {
-    id: 'e4',
-    description: 'bike computer',
-    amount: 999.99,
-    date: new Date('2024-04-10'),
-  },
-  {
-    id: 'e5',
-    description: 'bike computer',
-    amount: 999.99,
-    date: new Date('2024-04-10'),
-  },
-  {
-    id: 'e6',
-    description: 'bike computer',
-    amount: 999.99,
-    date: new Date('2024-04-10'),
-  },
-  {
-    id: 'e7',
-    description: 'bike computer',
-    amount: 999.99,
-    date: new Date('2024-04-10'),
-  },
-  {
-    id: 'e8',
-    description: 'bike computer',
-    amount: 999.99,
-    date: new Date('2024-04-10'),
-  },
-  {
-    id: 'e9',
-    description: 'bike computer',
-    amount: 999.99,
-    date: new Date('2024-04-10'),
-  },
+
 ];
 
 export const ExpensesContext = createContext({
