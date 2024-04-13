@@ -6,9 +6,12 @@ import { ExpensesContext } from '../store/expenses-context';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
 import { deleteExpense, storeExpense, updateExpense } from '../util/http';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
+import ErrorOverlay from '../components/UI/ErrorOverlay';
 
 export default function ManageExpense({ route, navigation }) {
   const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState();
+
   const expenseCtx = useContext(ExpensesContext);
 
   const editedExpenseId = route.params?.expenseId;
@@ -26,9 +29,13 @@ export default function ManageExpense({ route, navigation }) {
 
   function deleteExpenseHandler() {
     setIsSending(true);
-    expenseCtx.deleteExpense(editedExpenseId);
-    deleteExpense(editedExpenseId);
-    navigation.goBack();
+    try {
+      expenseCtx.deleteExpense(editedExpenseId);
+      deleteExpense(editedExpenseId);
+      navigation.goBack();
+    } catch (error) {
+      setError('Could not delete expense. Try again later!');
+    }
   }
 
   function cancelHandler() {
@@ -37,14 +44,31 @@ export default function ManageExpense({ route, navigation }) {
 
   async function confirmHandler(expenseData) {
     setIsSending(true);
-    if (isEditing) {
-      expenseCtx.updateExpense(editedExpenseId, expenseData);
-      updateExpense(editedExpenseId, expenseData);
-    } else {
-      const id = await storeExpense(expenseData);
-      expenseCtx.addExpense({ ...expenseData, id: id });
+    try {
+      if (isEditing) {
+        expenseCtx.updateExpense(editedExpenseId, expenseData);
+        updateExpense(editedExpenseId, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
+        expenseCtx.addExpense({ ...expenseData, id: id });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError(
+        isEditing
+          ? 'Could not edit expense. Try again later!'
+          : 'Could not add expense. Try again later!'
+      );
     }
+  }
+
+  function errorHandler() {
+    setError(null);
     navigation.goBack();
+  }
+
+  if (error && !isSending) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
   }
 
   if (isSending) {
